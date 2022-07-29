@@ -1,10 +1,26 @@
 {
-  "name": "wallet",
+  "name": "etherspay-wallet",
+  "description": "Official Etherspay Wallet",
   "version": "0.1.0",
+  "author": "Etherspay",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
+  "build": {
+    "appId": "com.etherspay.wallet",
+    "productName": "Etherspay Wallet",
+    "copyright": "Copyright © 2022 Etherspay",
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "Etherspay_Wallet_Setup.${ext}"
+    },
+    "icon": "build/logo512.png"
+  },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -14,13 +30,15 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "wait-on": "^6.0.1",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "web3": "^1.7.4"
   },
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none cross-env TAILWIND_MODE=watch react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dist": "electron-builder"
   },
   "eslintConfig": {
     "extends": [
@@ -43,7 +61,9 @@
   "devDependencies": {
     "autoprefixer": "^10.4.8",
     "electron": "^19.0.10",
+    "electron-builder": "^23.1.0",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.6"
-  }
+  },
+  "license": "MIT"
 }
