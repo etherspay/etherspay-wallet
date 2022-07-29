@@ -1,5 +1,5 @@
 const path = require('path');
-const { app, BrowserWindow, ipcMain, protocol, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 
 const ipc = ipcMain;
 
@@ -68,11 +68,6 @@ function createWindow() {
         if (mainWindow.isMinimized()) mainWindow.restore();
         mainWindow.focus();
       }
-    });
-
-    // Create mainWindow, load the rest of the app, etc...
-    app.whenReady().then(() => {
-      createWindow();
     });
 
     // Handle the protocol. In this case, we choose to show an Error Box.

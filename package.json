@@ -42,9 +42,9 @@
     "web3": "^1.7.4"
   },
   "scripts": {
-    "start": "concurrently \"cross-env BROWSER=none cross-env TAILWIND_MODE=watch react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "concurrently \"cross-env BROWSER=none cross-env TAILWIND_MODE=watch react-app-rewired start\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "dist": "electron-builder"
   },
@@ -67,11 +67,21 @@
     ]
   },
   "devDependencies": {
+    "assert": "^2.0.0",
     "autoprefixer": "^10.4.8",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "electron": "^19.0.10",
     "electron-builder": "^23.1.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
     "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.6"
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.1.6",
+    "url": "^0.11.0"
   },
   "license": "MIT"
 }
