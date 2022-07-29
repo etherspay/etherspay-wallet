@@ -1,7 +1,17 @@
 const path = require('path');
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, dialog } = require('electron');
 
 const ipc = ipcMain;
+
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('etherspay-wallet', process.execPath, [
+      path.resolve(process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient('etherspay-wallet');
+}
 
 function createWindow() {
   // Create the browser window.
@@ -18,7 +28,7 @@ function createWindow() {
     },
     autoHideMenuBar: true,
     frame: false,
-    icon: path.join(__dirname, 'logo192.png'),
+    icon: path.join(__dirname, 'assets/logo192.png'),
   });
 
   // and load the index.html of the app.
@@ -45,9 +55,49 @@ function createWindow() {
       mainWindow.maximize();
     }
   });
+
+  // Set protocol handler
+  const gotTheLock = app.requestSingleInstanceLock();
+
+  if (!gotTheLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+      }
+    });
+
+    // Create mainWindow, load the rest of the app, etc...
+    app.whenReady().then(() => {
+      createWindow();
+    });
+
+    // Handle the protocol. In this case, we choose to show an Error Box.
+    app.on('open-url', (event, url) => {
+      dialog.showErrorBox('Welcome Back', `You arrived from: ${url}`);
+    });
+  }
 }
 
 app.whenReady().then(createWindow);
+
+// Taskbar customization
+app.setUserTasks([
+  {
+    program: process.execPath,
+    arguments: '--new-window',
+    iconIndex: 0,
+    title: 'Switch network',
+    description: 'Switch between different blockchain networks',
+  },
+]);
+
+app.on('open-url', (event, url) => {
+  dialog.showErrorBox('Welcome Back', `You arrived from: ${url}`);
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

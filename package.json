@@ -17,7 +17,15 @@
       "createStartMenuShortcut": true,
       "artifactName": "Etherspay_Wallet_Setup.${ext}"
     },
-    "icon": "build/logo512.png"
+    "icon": "build/assets/logo512.png",
+    "protocols": [
+      {
+        "name": "Etherspay Wallet",
+        "schemes": [
+          "etherspay-wallet"
+        ]
+      }
+    ]
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
