@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ArrowRightIcon } from '@heroicons/react/solid';
+import { KeyIcon } from '@heroicons/react/outline';
 import ETPIcon from '../assets/logo512.png';
 
 const bcrypt = require('bcryptjs');
@@ -61,7 +61,7 @@ function WalletLogin() {
             className="relative inline-flex items-center px-6 py-2 overflow-hidden text-white bg-emerald-600 active:bg-emerald-700 rounded group focus:outline-none focus:ring-0"
           >
             <span className="absolute right-0 transition-transform translate-x-full group-hover:-translate-x-4">
-              <ArrowRightIcon className="w-4 h-4" />
+              <KeyIcon className="w-4 h-4" />
             </span>
 
             <span className="text-sm font-medium transition-all group-hover:mr-4">

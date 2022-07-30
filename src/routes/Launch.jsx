@@ -27,9 +27,9 @@ function Launch() {
           href="https://github.com/etherspay/etherspay-wallet"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center space-x-2 text-xs font-semibold text-white py-1 px-3 bg-gray-700 rounded-full"
+          className="flex items-center space-x-2 text-xs font-semibold text-white py-1 px-3 bg-gray-600 border border-gray-500 rounded-full"
         >
-          <p>Github Repo</p>
+          <p>Github</p>
           <img className="w-5 h-5" src={GHIcon} alt="Github" />
         </a>
       </div>
