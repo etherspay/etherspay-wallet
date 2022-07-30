@@ -11,10 +11,15 @@ function Launch() {
   const [walletLogin, setWalletLogin] = useState(false);
 
   useEffect(() => {
-    if (window.localStorage.getItem('walletPassword')) {
+    if (
+      window.localStorage.getItem('walletPassword') &&
+      window.localStorage.getItem('accounts')
+    ) {
       setWalletLogin(true);
+      setWalletSetup(false);
     } else {
       setWalletSetup(true);
+      setWalletLogin(false);
     }
   }, []);
 

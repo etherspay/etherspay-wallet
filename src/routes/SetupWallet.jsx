@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { ArrowSmLeftIcon, ArrowRightIcon } from '@heroicons/react/solid';
 import { ExclamationIcon } from '@heroicons/react/outline';
@@ -7,12 +7,13 @@ import WalletSteps from '../components/WalletSteps';
 import { ethers } from 'ethers';
 
 const bcrypt = require('bcryptjs');
-const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545');
+// const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545');
 
 function SetupWallet() {
   const pwd = useRef();
   const pwd2 = useRef();
   const terms = useRef();
+  const seed = useRef();
 
   const [allowed, setAllowed] = useState(false);
   const [backupMnemonic, setBackupMnemonic] = useState(false);
@@ -27,6 +28,19 @@ function SetupWallet() {
     try {
       bcrypt.hash(pwd.current.value, 8, function (err, hash) {
         localStorage.setItem('walletPassword', hash);
+        console.log(wallet);
+        localStorage.setItem(
+          'accounts',
+          JSON.stringify([
+            {
+              name: 'Account 1',
+              address: wallet.address,
+              mnemonic: wallet.mnemonic.phrase,
+              privateKey: wallet.privateKey,
+              publicKey: wallet.publicKey,
+            },
+          ])
+        );
         setBackupMnemonic(true);
       });
     } catch (err) {
@@ -60,6 +74,13 @@ function SetupWallet() {
   function verifyMnemonicFn() {
     setVerifyMnemonic(true);
     setBackupMnemonic(false);
+
+    if (
+      JSON.parse(localStorage.getItem('accounts'))[0].mnemonic ===
+      seed.current.value
+    ) {
+      window.location.replace('/wallet/');
+    }
   }
 
   return (
@@ -161,6 +182,7 @@ function SetupWallet() {
                   </div>
                   <textarea
                     cols={4}
+                    ref={seed}
                     placeholder="Paste your seed phrase here"
                     className="mt-4 text-white w-full placeholder:text-gray-300 focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm bg-gray-600 resize-none p-3 space-x-2 rounded border border-gray-500 flex items-center"
                   ></textarea>

@@ -8,7 +8,7 @@ import WalletHome from './components/WalletHome';
 
 function App() {
   return (
-    <div className="bg-gray-600 w-screen h-screen overflow-hidden">
+    <div className="bg-gray-600 w-screen h-screen">
       <MenuBar />
       <Routes>
         <Route path="/" element={<Launch />} />

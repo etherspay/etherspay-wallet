@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { ChevronDownIcon, PencilIcon } from '@heroicons/react/solid';
-import { DuplicateIcon, CheckIcon } from '@heroicons/react/outline';
+import { Fragment, useState, useEffect } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import { DuplicateIcon, CheckIcon, CogIcon } from '@heroicons/react/outline';
 
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
@@ -11,6 +11,7 @@ import bnb from '../assets/binance-logo.png';
 
 function WalletHeader() {
   const [copyAddress, setCopyAddress] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState('');
 
   function copyAddr() {
     navigator.clipboard.writeText('address');
@@ -21,17 +22,47 @@ function WalletHeader() {
     }, 1000);
   }
 
+  useEffect(() => {
+    if (
+      !localStorage.getItem('accounts') ||
+      !localStorage.getItem('walletPassword')
+    ) {
+      window.location.replace('/');
+    }
+
+    setSelectedAddress(JSON.parse(localStorage.getItem('accounts'))[0].address);
+  }, []);
+
   return (
     <div className="w-full p-1 flex justify-between">
-      <div></div>
+      <div className="flex">
+        <div class="inline-flex text-gray-300 -space-x-px text-xs rounded-md">
+          <button
+            class="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-l-md focus:outline-none focus:z-10 hover:bg-gray-700"
+            type="button"
+          >
+            Dashboard
+          </button>
+
+          <button
+            class="font-medium w-20 bg-[#1F293733] border border-gray-600 focus:outline-none focus:z-10 hover:bg-gray-700"
+            type="button"
+          >
+            Send
+          </button>
+
+          <button
+            class="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-r-md focus:outline-none focus:z-10 hover:bg-gray-700"
+            type="button"
+          >
+            Settings
+          </button>
+        </div>
+      </div>
       <div className="flex">
         <div className="bg-gray-800 space-x-2 mr-1 w-52 px-3 bg-opacity-20 rounded-md flex items-center">
           <div className="flex items-center">
-            <Jazzicon
-              seed={jsNumberForAddress(
-                '0xa74dA5A31B231C8c253bBE044eb2ecb924B422bC'
-              )}
-            />
+            <Jazzicon seed={jsNumberForAddress(selectedAddress)} />
           </div>
           <p className="truncate text-sm text-gray-300 font-medium">
             0xa74dA5A31B231C8c253bBE044eb2ecb924B422bC
@@ -144,7 +175,9 @@ function WalletHeader() {
             </Transition>
           </Menu>
         </div>
-        <div></div>
+        <button className="px-3 bg-[#1F293733] hover:bg-gray-700 text-gray-300 rounded-md ml-1">
+          <CogIcon className="w-4 h-4 opacity-100" />
+        </button>
       </div>
     </div>
   );
