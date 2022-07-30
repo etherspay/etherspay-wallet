@@ -5,21 +5,33 @@ import { DuplicateIcon, CheckIcon, CogIcon } from '@heroicons/react/outline';
 
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
+import { ethers } from 'ethers';
+
 import eth from '../assets/ethereum-logo.png';
 import matic from '../assets/polygon-logo.png';
 import bnb from '../assets/binance-logo.png';
 
+const provider = new ethers.providers.JsonRpcProvider(
+  'https://mainnet.infura.io/v3/4299b69d50b54f9fafc81f91c46869de'
+);
+
 function WalletHeader() {
   const [copyAddress, setCopyAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState('');
+  const [blockNumber, setBlockNumber] = useState(10);
 
   function copyAddr() {
-    navigator.clipboard.writeText('address');
+    navigator.clipboard.writeText(selectedAddress);
     setCopyAddress(true);
-
+    console.log('copied');
     setTimeout(() => {
       setCopyAddress(false);
     }, 1000);
+  }
+
+  async function getBlockNumber() {
+    const block = await provider.getBlock('latest');
+    setBlockNumber(block.number);
   }
 
   useEffect(() => {
@@ -33,26 +45,30 @@ function WalletHeader() {
     setSelectedAddress(JSON.parse(localStorage.getItem('accounts'))[0].address);
   }, []);
 
+  provider.on('block', (block) => {
+    setBlockNumber(block);
+  });
+
   return (
     <div className="w-full p-1 flex justify-between">
       <div className="flex">
-        <div class="inline-flex text-gray-300 -space-x-px text-xs rounded-md">
+        <div className="inline-flex text-gray-300 -space-x-px text-xs rounded-md">
           <button
-            class="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-l-md focus:outline-none focus:z-10 hover:bg-gray-700"
+            className="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-l-md focus:outline-none focus:z-10 hover:bg-gray-700"
             type="button"
           >
             Dashboard
           </button>
 
           <button
-            class="font-medium w-20 bg-[#1F293733] border border-gray-600 focus:outline-none focus:z-10 hover:bg-gray-700"
+            className="font-medium w-20 bg-[#1F293733] border border-gray-600 focus:outline-none focus:z-10 hover:bg-gray-700"
             type="button"
           >
             Send
           </button>
 
           <button
-            class="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-r-md focus:outline-none focus:z-10 hover:bg-gray-700"
+            className="font-medium w-20 bg-[#1F293733] border border-gray-600 rounded-r-md focus:outline-none focus:z-10 hover:bg-gray-700"
             type="button"
           >
             Settings
@@ -65,7 +81,7 @@ function WalletHeader() {
             <Jazzicon seed={jsNumberForAddress(selectedAddress)} />
           </div>
           <p className="truncate text-sm text-gray-300 font-medium">
-            0xa74dA5A31B231C8c253bBE044eb2ecb924B422bC
+            {selectedAddress}
           </p>
           <button onClick={copyAddr} className="py-1">
             {copyAddress ? (
@@ -104,7 +120,7 @@ function WalletHeader() {
                     {({ active }) => (
                       <button
                         className={`${
-                          active ? 'bg-emerald-500' : null
+                          active ? 'bg-emerald-600' : null
                         } group flex w-full text-white font-medium items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <img
@@ -121,7 +137,7 @@ function WalletHeader() {
                     {({ active }) => (
                       <button
                         className={`${
-                          active ? 'bg-emerald-500' : null
+                          active ? 'bg-emerald-600' : null
                         } group flex w-full text-white font-medium items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <img
@@ -138,7 +154,7 @@ function WalletHeader() {
                     {({ active }) => (
                       <button
                         className={`${
-                          active ? 'bg-emerald-500' : null
+                          active ? 'bg-emerald-600' : null
                         } group flex w-full text-white font-medium items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <img
@@ -157,7 +173,7 @@ function WalletHeader() {
                     {({ active }) => (
                       <button
                         className={`${
-                          active ? 'bg-emerald-500' : null
+                          active ? 'bg-emerald-600' : null
                         } group flex w-full text-white font-medium items-center rounded-md px-2 py-2 text-sm`}
                       >
                         <img
@@ -178,6 +194,11 @@ function WalletHeader() {
         <button className="px-3 bg-[#1F293733] hover:bg-gray-700 text-gray-300 rounded-md ml-1">
           <CogIcon className="w-4 h-4 opacity-100" />
         </button>
+      </div>
+
+      <div className="fixed flex items-center py-0.5 px-2 bg-[#1F293733] space-x-1 bottom-1 right-1 rounded-full text-gray-300 text-xs font-semibold">
+        <p>{blockNumber}</p>
+        <div className="bg-emerald-500 w-1.5 h-1.5 rounded-full"></div>
       </div>
     </div>
   );

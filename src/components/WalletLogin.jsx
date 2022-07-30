@@ -37,7 +37,7 @@ function WalletLogin() {
         </div>
         {wrongPass ? (
           <div className="text-start mt-5">
-            <p class="text-red-400 text-xs">Incorrect password</p>
+            <p className="text-red-400 text-xs">Incorrect password</p>
           </div>
         ) : (
           <div className="mt-5" />

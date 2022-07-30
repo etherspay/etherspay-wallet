@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import WalletHeader from './WalletHeader';
 import ETPIcon from '../assets/logo512.png';
 
