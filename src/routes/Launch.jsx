@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 
 // Components
 import WalletSetup from '../components/WalletSetup';
+import WalletLogin from '../components/WalletLogin';
 
 import GHIcon from '../assets/github.png';
 
 function Launch() {
   const [walletSetup, setWalletSetup] = useState(false);
+  const [walletLogin, setWalletLogin] = useState(false);
 
   useEffect(() => {
-    if (window.localStorage.getItem('walletSetup') !== 'true') {
+    if (window.localStorage.getItem('walletPassword')) {
+      setWalletLogin(true);
+    } else {
       setWalletSetup(true);
     }
   }, []);
@@ -17,6 +21,7 @@ function Launch() {
   return (
     <>
       {walletSetup && <WalletSetup />}
+      {walletLogin && <WalletLogin />}
       <div className="absolute bottom-1 right-1">
         <a
           href="https://github.com/etherspay/wallet"
