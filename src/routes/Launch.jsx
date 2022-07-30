@@ -24,7 +24,7 @@ function Launch() {
       {walletLogin && <WalletLogin />}
       <div className="absolute bottom-1 right-1">
         <a
-          href="https://github.com/etherspay/wallet"
+          href="https://github.com/etherspay/etherspay-wallet"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center space-x-2 text-xs font-semibold text-white py-1 px-3 bg-gray-700 rounded-full"

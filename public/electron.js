@@ -94,6 +94,13 @@ app.setUserTasks([
     title: 'Switch network',
     description: 'Switch between different blockchain networks',
   },
+  {
+    program: process.execPath,
+    arguments: '--new-window',
+    iconIndex: 0,
+    title: 'Create transaction',
+    description: 'Create a new transaction with your wallet',
+  },
 ]);
 
 app.on('open-url', (event, url) => {

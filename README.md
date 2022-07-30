@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Etherspay Wallet
+
+![Etherspay Wallet](./public/assets/blob-scene-etherspay.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
