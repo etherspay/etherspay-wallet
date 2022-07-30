@@ -2,7 +2,7 @@
 
 ![Etherspay Wallet](./public/assets/blob-scene-etherspay.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 
 ## Available Scripts
 
