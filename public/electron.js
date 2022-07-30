@@ -1,5 +1,5 @@
 const path = require('path');
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 
 const ipc = ipcMain;
 
@@ -20,8 +20,9 @@ function createWindow() {
     height: 600,
     minHeight: 600,
     minWidth: 800,
+    backgroundColor: '#4B5563',
     webPreferences: {
-      nodeIntegration: false, // is default value after Electron v5
+      nodeIntegration: true, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, 'preload.js'), // use a preload script
@@ -29,6 +30,11 @@ function createWindow() {
     autoHideMenuBar: true,
     frame: false,
     icon: path.join(__dirname, 'assets/logo192.png'),
+  });
+
+  mainWindow.webContents.on('new-window', function (event, url) {
+    event.preventDefault();
+    shell.openExternal(url);
   });
 
   // and load the index.html of the app.

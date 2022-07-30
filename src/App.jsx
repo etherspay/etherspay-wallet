@@ -1,11 +1,20 @@
+import { Routes, Route } from 'react-router-dom';
 import MenuBar from './components/MenuBar';
-const Web3 = require('web3');
-const web3 = new Web3('http://localhost:7545');
+import Launch from './routes/Launch';
+import Newto from './routes/NewTo';
+import ImportWallet from './routes/ImportWallet';
+import SetupWallet from './routes/SetupWallet';
 
 function App() {
   return (
-    <div className="bg-gray-600 w-screen h-screen">
+    <div className="bg-gray-600 w-screen h-screen overflow-hidden">
       <MenuBar />
+      <Routes>
+        <Route path="/" element={<Launch />} />
+        <Route path="/setupwallet/" element={<Newto />} />
+        <Route path="/setupwallet/import" element={<ImportWallet />} />
+        <Route path="/setupwallet/setup" element={<SetupWallet />} />
+      </Routes>
     </div>
   );
 }
