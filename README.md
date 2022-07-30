@@ -3,6 +3,7 @@
 ![Etherspay Wallet](./public/assets/blob-scene-etherspay.png)
 
 ![JS](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![ETH](https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white)
 
 ## Available Scripts
 
