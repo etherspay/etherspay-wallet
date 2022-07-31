@@ -1,7 +1,15 @@
 const path = require('path');
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  shell,
+  Notification,
+} = require('electron');
 
 const ipc = ipcMain;
+const { ethers } = require('ethers');
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
@@ -39,6 +47,7 @@ function createWindow() {
   // and load the index.html of the app.
   if (app.isPackaged) {
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    console.log('packaged');
   } else {
     mainWindow.loadURL('http://localhost:3000');
     mainWindow.webContents.openDevTools();
@@ -58,6 +67,28 @@ function createWindow() {
       mainWindow.unmaximize();
     } else {
       mainWindow.maximize();
+    }
+  });
+
+  ipc.on('incoming-tx', async (event, data) => {
+    const tx = await JSON.parse(data);
+    const prevTx = await mainWindow.webContents.executeJavaScript(
+      `localStorage.getItem("latest-tx")`
+    );
+    if (tx.hash === prevTx) {
+      console.log('Duplicate tx');
+    } else {
+      new Notification({
+        title: 'Transaction received!',
+        body: `Your received ${ethers.utils.formatEther(tx.value)} ETH.`,
+        icon: path.join(__dirname, 'assets/logo192.png'),
+      }).show();
+
+      mainWindow.webContents.executeJavaScript(
+        `localStorage.setItem("latest-tx", ${JSON.stringify(
+          tx.hash.toString()
+        )})`
+      );
     }
   });
 

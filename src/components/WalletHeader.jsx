@@ -11,14 +11,13 @@ import eth from '../assets/ethereum-logo.png';
 import matic from '../assets/polygon-logo.png';
 import bnb from '../assets/binance-logo.png';
 
-const provider = new ethers.providers.JsonRpcProvider(
-  'https://mainnet.infura.io/v3/4299b69d50b54f9fafc81f91c46869de'
-);
+const provider = new ethers.providers.WebSocketProvider('ws://localhost:7545');
 
 function WalletHeader() {
   const [copyAddress, setCopyAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [blockNumber, setBlockNumber] = useState(10);
+  const [ping, setPing] = useState(false);
 
   function copyAddr() {
     navigator.clipboard.writeText(selectedAddress);
@@ -27,11 +26,6 @@ function WalletHeader() {
     setTimeout(() => {
       setCopyAddress(false);
     }, 1000);
-  }
-
-  async function getBlockNumber() {
-    const block = await provider.getBlock('latest');
-    setBlockNumber(block.number);
   }
 
   useEffect(() => {
@@ -47,7 +41,27 @@ function WalletHeader() {
 
   provider.on('block', (block) => {
     setBlockNumber(block);
+    setPing(true);
+    setTimeout(() => {
+      setPing(false);
+    }, 500);
   });
+
+  provider.off('pending').on('pending', async (tx) => {
+    console.log('txs:', tx);
+
+    await provider.getTransaction(tx).then(async (tx) => {
+      console.log(selectedAddress);
+      if (tx.to === JSON.parse(localStorage.getItem('accounts'))[0].address) {
+        sendTxNotification(tx);
+      }
+    });
+  });
+
+  function sendTxNotification(tx) {
+    const str = JSON.stringify(tx);
+    window.electron.send('incoming-tx', str);
+  }
 
   return (
     <div className="w-full p-1 flex justify-between">
@@ -198,7 +212,11 @@ function WalletHeader() {
 
       <div className="fixed flex items-center py-0.5 px-2 bg-[#1F293733] space-x-1 bottom-1 right-1 rounded-full text-gray-300 text-xs font-semibold">
         <p>{blockNumber}</p>
-        <div className="bg-emerald-500 w-1.5 h-1.5 rounded-full"></div>
+        <div
+          className={`bg-emerald-500 w-1.5 h-1.5 rounded-full ${
+            ping ? 'animate-ping' : null
+          }`}
+        ></div>
       </div>
     </div>
   );
